@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "../Headers/lireChaine.h"
 #include "../Headers/parametres_salle.h"
 #include "../Headers/recupererMatiere.h"
 #include "../Headers/recupererInfoPerso.h"
@@ -35,7 +37,7 @@ int main(int argc, char *argv[])
 
      menu();
 
-    /*
+    
     //affichage des etudiants
     printf("\n\n----Liste des etudiants---\n\n");
     for (int i = 0; i < n; i++)
@@ -51,10 +53,17 @@ int main(int argc, char *argv[])
          printf("\nMoyenne genarale : %lf\n",etudiant[i].moyenneEtudiant);
          printf("\n------------\n");
          
-     }*/
-
+     }
+     for (int i = 0; i < nbre_matiere; i++)
+     {
+          free(etudiant[i].notes);
+          free(etudiant[i].moyenneMatiere);
+     }
+     
      free(etudiant);
      free(matiere);
+
+
    
 
 }
