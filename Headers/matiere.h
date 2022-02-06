@@ -2,5 +2,5 @@ typedef struct Matiere Matiere;
 
 struct Matiere
 {
-    char nom[100];
+    char nom[50];
 };

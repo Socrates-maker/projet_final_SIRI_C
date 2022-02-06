@@ -3,8 +3,8 @@ typedef struct Etudiant Etudiant;
 
 struct Etudiant{
     int id;
-    char nom[100];
-    char prenom[100];
+    char nom[30];
+    char prenom[30];
     char sexe;
     int age;
     double **notes;
