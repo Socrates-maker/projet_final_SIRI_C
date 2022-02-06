@@ -7,6 +7,11 @@
 #include "../Headers/recupererMatiere.h"
 #include "../Headers/recupererInfoPerso.h"
 #include "../Headers/menu.h"
+#include "../Headers/trierTab.h"
+#include "../Headers/afficherMoyEtudiant.h"
+#include "../Headers/afficherMeilleurEtudiante.h"
+#include "../Headers/moyenneSalle.h"
+
 
 
 int main(int argc, char *argv[])
@@ -14,8 +19,9 @@ int main(int argc, char *argv[])
     int n; //effectif de la classe
     int nbre_matiere;
     char nom_filiere[50];
-    Etudiant *etudiant;
+    Etudiant *etudiant,*tmp;
     Matiere *matiere;
+    int choice;
     
     //Recuperer les parametre de la salle
     parametres_salle(&n, nom_filiere,&nbre_matiere);
@@ -32,38 +38,58 @@ int main(int argc, char *argv[])
     etudiant = (Etudiant*)calloc(n,sizeof(Etudiant));
    
     //recuper les etudiants 
-    //recuper les notes par matiere et calculer les moyenne par matiere 
+    //recuper les notes par matiere et calculer les moyennes par matiere 
     recupererInfoPerso(etudiant,n,matiere,nbre_matiere);
 
-     menu();
-
+     tmp = (Etudiant*)calloc(n,sizeof(Etudiant));
+     tmp = etudiant;
+     do{
+          menu();
+          scanf("%d",&choice);
+          //viderBuffer();
+          switch (choice)
+          {
+          case 1:
+               printf("\n****Liste des etudiant et de leur mouyenne****\n");
+               afficherMoyEtudiant(tmp,n);
+               break;
+          case 2:
+               trierTab(etudiant,n);
+               printf("\n****Classement des etudiants par ordre d'excellence****\n");
+               afficherMoyEtudiant(etudiant,n);
+               break;
+          case 3:
+               printf("La moyenne de la Salle est : %lf\n",moyenneSalle(tmp,n));
+               break;
+          case 4:
+               trierTab(etudiant,n);
+               printf("\n****Liste des trois meilleurs etudiants****\n");
+               afficherMoyEtudiant(etudiant,3);
+               break;
+          case 5:
+               trierTab(etudiant,n);
+               printf("L'etudiante ayant la meilleur moyenne est :\n");
+               afficherMeilleureEtudiante(etudiant,n);
+               break;
+          default:
+               printf("Veuillez saisir une option valide\n");
+               break;
+          }
+     }while(choice!=0);
     
-    //affichage des etudiants
-    printf("\n\n----Liste des etudiants---\n\n");
-    for (int i = 0; i < n; i++)
-    {
-         printf("Etudiant numero %d\n",etudiant[i].id);
-         printf("Nom : %s\nPrenom: %s \nSexe : %c \nAge : %d \n",etudiant[i].nom,etudiant[i].prenom,etudiant[i].sexe,etudiant[i].age);
-         for (int j = 0; j < nbre_matiere; j++)
-         {
-              printf("\nMoyenne de l'etudiant dans la matiere %s\n", matiere[j].nom);
-              printf("%lf",etudiant[i].moyenneMatiere[j]);
-         }
-
-         printf("\nMoyenne genarale : %lf\n",etudiant[i].moyenneEtudiant);
-         printf("\n------------\n");
-         
-     }
      for (int i = 0; i < nbre_matiere; i++)
      {
           free(etudiant[i].notes);
           free(etudiant[i].moyenneMatiere);
      }
-     
+
+     for (int i = 0; i < nbre_matiere; i++)
+     {
+          free(tmp[i].notes);
+          free(tmp[i].moyenneMatiere);
+     }
+     free(tmp);
      free(etudiant);
      free(matiere);
-
-
-   
 
 }
